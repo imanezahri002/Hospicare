@@ -1,15 +1,15 @@
-package org.example.demo.mappers;
+package org.example.demo.mapper;
 
 import org.example.demo.dto.Patient.PatientDtoRequest;
 import org.example.demo.entities.Patient;
 import org.example.demo.entities.enums.GroupSanguin;
+import org.example.demo.entities.enums.Role;
 import org.example.demo.entities.enums.Sexe;
 
 public class PatientMapper {
 
     public static Patient toEntity(PatientDtoRequest dto) {
         Patient patient = new Patient();
-
         patient.setFullName(dto.getFullName());
         patient.setEmail(dto.getEmail());
         patient.setPassword(dto.getPassword());
@@ -17,7 +17,7 @@ public class PatientMapper {
         patient.setBithdate(dto.getBirthDate());
         patient.setAdresse(dto.getAddress());
         patient.setTelephone(dto.getTelephone());
-
+        patient.setRole(Role.PATIENT);
 
         // 🩸 Mapper le groupe sanguin (String → Enum)
         if (dto.getSang() != null && !dto.getSang().isEmpty()) {
@@ -36,8 +36,8 @@ public class PatientMapper {
         // 🚻 Mapper le sexe (String → Enum)
         if (dto.getSexe() != null && !dto.getSexe().isEmpty()) {
             switch (dto.getSexe().toLowerCase()) {
-                case "masculin" -> patient.setSexe(Sexe.MASCULIN);
-                case "féminin" -> patient.setSexe(Sexe.FEMININ);
+                case "MALE" -> patient.setSexe(Sexe.MASCULIN);
+                case "FEMALE" -> patient.setSexe(Sexe.FEMININ);
                 default -> patient.setSexe(null);
             }
         }

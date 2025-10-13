@@ -12,13 +12,16 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "patients")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class Patient extends User{
+
 
     @Id
     @GeneratedValue(generator = "UUID")
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
+
 
     @Column(name = "cin", nullable = false, unique = true)
     private String cin;

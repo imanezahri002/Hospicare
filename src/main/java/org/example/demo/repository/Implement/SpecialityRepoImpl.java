@@ -22,9 +22,8 @@ public class SpecialityRepoImpl implements ISpecialityRepo {
             );
             results = query.getResultList();
         } finally {
-            em.close(); // Toujours fermer pour libérer les ressources
+            em.close();
         }
-
         return results;
     }
 }

@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.example.demo.dto.Patient.PatientDtoRequest;
 import org.example.demo.entities.Patient;
-import org.example.demo.mappers.PatientMapper;
+import org.example.demo.mapper.PatientMapper;
 
 @Stateless
 public class PatientServiceImpl {

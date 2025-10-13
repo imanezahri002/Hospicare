@@ -141,26 +141,15 @@
                             <input type="password" id="password" name="password" required
                                    class="form-input block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-medical-300 focus:border-medical-300 transition-all"
                                    placeholder="Votre mot de passe">
+
+                            <input type="hidden" name="role" value="PATIENT">
+
                             <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <i class="fas fa-eye text-medical-400"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div>
-                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirmer le mot de passe</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-lock text-medical-400"></i>
-                            </div>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required
-                                   class="form-input block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-medical-300 focus:border-medical-300 transition-all"
-                                   placeholder="Confirmer le mot de passe">
-                            <button type="button" id="toggleConfirmPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-eye text-medical-400"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Champs spécifiques au patient (toujours visibles) -->
@@ -198,7 +187,8 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-tint text-medical-400"></i>
                             </div>
-                            <select id="bloodGroup" name="bloodGroup" class="...">
+                            <select id="bloodGroup" name="bloodGroup"
+                                    class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-medical-300 focus:border-medical-300 transition-all appearance-none">
                                 <option value="">Sélectionnez votre groupe</option>
                                 <option value="A_POSITIF">A+</option>
                                 <option value="A_NEGATIF">A-</option>
@@ -209,6 +199,9 @@
                                 <option value="O_POSITIF">O+</option>
                                 <option value="O_NEGATIF">O-</option>
                             </select>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <i class="fas fa-chevron-down text-medical-400"></i>
+                            </div>
                         </div>
                     </div>
 
@@ -218,11 +211,11 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-venus-mars text-medical-400"></i>
                             </div>
-                            <select id="gender" name="gender"
+                            <select id="sexe" name="sexe"
                                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-medical-300 focus:border-medical-300 transition-all appearance-none">
                                 <option value="">Sélectionnez votre sexe</option>
-                                <option value="MALE">Masculin</option>
-                                <option value="FEMALE">Féminin</option>
+                                <option value="MASCULIN">Masculin</option>
+                                <option value="FEMININ">Féminin</option>
                             </select>
                         </div>
                     </div>
@@ -455,7 +448,7 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fas fa-venus-mars text-medical-400"></i>
                                 </div>
-                                <select id="gender" name="gender"
+                                <select id="sexe" name="sexe"
                                         class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-medical-300 focus:border-medical-300 transition-all appearance-none">
                                     <option value="">Sélectionnez votre sexe</option>
                                     <option value="MALE">Masculin</option>
@@ -497,11 +490,8 @@
                 roleSpecificFields.classList.add('hidden');
             }
         });
-
         // ======= Toggle password =======
         const togglePassword = document.getElementById('togglePassword');
-        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-
         togglePassword.addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const icon = this.querySelector('i');
@@ -509,27 +499,6 @@
             icon.classList.toggle('fa-eye-slash');
             icon.classList.toggle('fa-eye');
         });
-
-        toggleConfirmPassword.addEventListener('click', function() {
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            const icon = this.querySelector('i');
-            confirmPasswordInput.type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
-            icon.classList.toggle('fa-eye-slash');
-            icon.classList.toggle('fa-eye');
-        });
-
-        // ======= Validation du formulaire =======
-        const registerForm = document.getElementById('registerForm');
-        registerForm.addEventListener('submit', function(e) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert('Les mots de passe ne correspondent pas.');
-                return false;
-            }
-        });
-
     });
 
 </script>
