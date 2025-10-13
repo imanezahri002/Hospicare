@@ -43,11 +43,21 @@ public class LoginServlet extends HttpServlet {
         // 1️⃣ Récupérer les données du formulaire
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
         try {
             LoginDtoRequest dto = new LoginDtoRequest(email, password);
             LoginDtoResponse user = authService.login(dto);
+
             request.setAttribute("user", user);
-            request.getRequestDispatcher("views/success.jsp").forward(request, response);
+            request.getSession().setAttribute("loggedUser", user);
+            // Redirection selon le rôle
+            switch (user.getRole()) {
+                case ADMIN -> response.sendRedirect(request.getContextPath() + "views/admin/layout.jsp");
+                case DOCTOR -> response.sendRedirect(request.getContextPath() + "views/doctor/layout.jsp");
+                case PATIENT -> response.sendRedirect(request.getContextPath() + "views/patient/layout.jsp");
+                case STAFF -> response.sendRedirect(request.getContextPath()+"views/staf/layout.jsp");
+                default -> response.sendRedirect(request.getContextPath() + "/login.jsp");
+            }
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("views/login.jsp").forward(request, response);
