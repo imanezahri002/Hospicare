@@ -64,6 +64,8 @@ public class RegisterServlet extends HttpServlet{
             patientDto.setSang(request.getParameter("bloodGroup"));
             patientDto.setSexe(request.getParameter("sexe"));
 
+
+
             String birthDateStr = request.getParameter("birthDate");
             if (birthDateStr != null && !birthDateStr.isEmpty()) {
                 patientDto.setBirthDate(LocalDate.parse(birthDateStr));

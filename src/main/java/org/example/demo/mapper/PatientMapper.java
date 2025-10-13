@@ -19,6 +19,7 @@ public class PatientMapper {
         patient.setTelephone(dto.getTelephone());
         patient.setRole(Role.PATIENT);
 
+
         // 🩸 Mapper le groupe sanguin (String → Enum)
         if (dto.getSang() != null && !dto.getSang().isEmpty()) {
             switch (dto.getSang()) {
@@ -35,12 +36,13 @@ public class PatientMapper {
         }
         // 🚻 Mapper le sexe (String → Enum)
         if (dto.getSexe() != null && !dto.getSexe().isEmpty()) {
-            switch (dto.getSexe().toLowerCase()) {
-                case "MALE" -> patient.setSexe(Sexe.MASCULIN);
-                case "FEMALE" -> patient.setSexe(Sexe.FEMININ);
+            switch (dto.getSexe()) {
+                case "MASCULIN" -> patient.setSexe(Sexe.MASCULIN);
+                case "FEMININ" -> patient.setSexe(Sexe.FEMININ);
                 default -> patient.setSexe(null);
             }
         }
+
         return patient;
     }
 }

@@ -122,4 +122,18 @@ public class Patient extends User{
         this.sexe = sexe;
     }
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", cin='" + cin + '\'' +
+                ", bithdate=" + bithdate +
+                ", adresse='" + adresse + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", sang=" + sang +
+                ", sexe=" + sexe +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
