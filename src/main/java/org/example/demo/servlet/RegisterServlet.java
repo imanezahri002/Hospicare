@@ -12,6 +12,7 @@ import org.example.demo.entities.Patient;
 import org.example.demo.entities.Speciality;
 import org.example.demo.mapper.SpecialityMapper;
 import org.example.demo.repository.Implement.PatientRepoImpl;
+import org.example.demo.repository.Implement.SpecialityRepoImpl;
 import org.example.demo.repository.Interfaces.IPatientRepo;
 import org.example.demo.repository.Interfaces.ISpecialityRepo;
 import org.example.demo.mapper.PatientMapper;
@@ -26,7 +27,7 @@ public class RegisterServlet extends HttpServlet{
 
     private final IPatientRepo patientRepository = new PatientRepoImpl();
 
-    private final ISpecialityRepo specialityRepo = new org.example.demo.repositories.impl.SpecialityRepoImpl();
+    private final ISpecialityRepo specialityRepo = new SpecialityRepoImpl();
     @Override
     protected void doGet(HttpServletRequest request,HttpServletResponse response)
             throws ServletException, IOException {

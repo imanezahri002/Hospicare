@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!-- Page Header -->
 <div class="flex justify-between items-center mb-6">
     <div>
@@ -47,6 +49,13 @@
             </thead>
             <tbody class="divide-y divide-gray-light" id="departments-table-body">
             <!-- Les données des départements seront chargées ici dynamiquement -->
+            <c:forEach var="departement" items="${departements}">
+                <tr>
+                    <td class="py-4 px-6 px-6 text-gray text-s">${departement.nom}</td>
+                    <td class="py-4 px-6 px-6 text-gray text-s">${departement.code}</td>
+                    <td class="py-4 px-6 px-6 text-gray text-s">${departement.description}</td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>

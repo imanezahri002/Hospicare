@@ -1,4 +1,4 @@
-package org.example.demo.repositories.impl;
+package org.example.demo.repository.Implement;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
