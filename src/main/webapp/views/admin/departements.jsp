@@ -54,6 +54,29 @@
                     <td class="py-4 px-6 px-6 text-gray text-s">${departement.nom}</td>
                     <td class="py-4 px-6 px-6 text-gray text-s">${departement.code}</td>
                     <td class="py-4 px-6 px-6 text-gray text-s">${departement.description}</td>
+                    <td class="py-4 px-6 text-gray text-s"><c:choose>
+                        <c:when test="${departement.is_active}">
+                            <span class="px-2 py-1 rounded-full bg-green-500 text-white">Active</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="px-2 py-1 rounded-full bg-red-500 text-white">Inactive</span>
+                        </c:otherwise>
+                    </c:choose></td>
+                    <td class="py-4 px-6">
+                        <div class="flex gap-2">
+                            <button class="text-gray hover:text-primary transition-colors duration-200 edit-btn"
+                                    data-id="${departement.id}"
+                                    data-name="${departement.nom}"
+                                    data-code="${departement.code}"
+                                    data-description="${departement.description}"
+                                    data-status="${departement.is_active}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-gray hover:text-danger transition-colors duration-200 delete-btn" data-id="${departement.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -62,11 +85,12 @@
 </div>
 
 <!-- Department Modal -->
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="specialtyModal">
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="departementModal">
     <div class="bg-white rounded-xl w-[90%] max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
 
         <!-- 🧾 Formulaire -->
         <form action="/addDepartment" method="post" id="department-form">
+            <input type="hidden" name="id" id="department-id">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 border-b border-gray-light">
                 <h3 class="text-lg font-semibold" id="modal-title">Add New Department</h3>
@@ -119,38 +143,96 @@
             <!-- Footer -->
             <div class="flex justify-end gap-3 p-4 border-t border-gray-light bg-gray-50 sticky bottom-0">
                 <button type="button" class="border border-gray-light text-gray px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300" id="cancel-btn">Cancel</button>
-                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-green-500 transition-colors duration-300">Save Department</button>
+                <button  id="submit-btn" type="submit" class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-green-500 transition-colors duration-300">Save Department</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    // Récupérer les éléments
-    const modal = document.getElementById("specialtyModal");
+    const modal = document.getElementById("departementModal");
     const openBtn = document.getElementById("add-department-btn");
     const closeBtn = document.getElementById("close-modal");
     const cancelBtn = document.getElementById("cancel-btn");
 
-    // 🔹 Ouvrir le modal
+    const form = document.getElementById("department-form");
+    const modalTitle = document.getElementById("modal-title");
+    const submitBtn = document.getElementById("submit-btn");
+
+    const idInput = document.getElementById("department-id");
+    const nameInput = document.getElementById("department-name");
+    const codeInput = document.getElementById("department-code");
+    const descInput = document.getElementById("department-description");
+    const statusInputs = document.querySelectorAll('input[name="status"]');
+
+    // 🔹 Ouvrir le modal pour AJOUTER
     openBtn.addEventListener("click", () => {
+        form.reset(); // vide les champs
+        idInput.value = ""; // pas d'ID
+        modalTitle.textContent = "Add New Department";
+        submitBtn.textContent = "Save Department";
+        form.action = "/addDepartment"; // action servlet d'ajout
+
         modal.classList.remove("hidden");
     });
 
-    // 🔹 Fermer le modal avec le bouton "x"
-    closeBtn.addEventListener("click", () => {
-        modal.classList.add("hidden");
+    // 🔹 Fermer le modal
+    [closeBtn, cancelBtn].forEach(btn => {
+        btn.addEventListener("click", () => modal.classList.add("hidden"));
     });
 
-    // 🔹 Fermer le modal avec le bouton "Cancel"
-    cancelBtn.addEventListener("click", () => {
-        modal.classList.add("hidden");
-    });
-
-    // 🔹 Fermer le modal si on clique à l’extérieur du contenu
     window.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.add("hidden");
-        }
+        if (e.target === modal) modal.classList.add("hidden");
     });
+
+    // 🔹 Ouvrir le modal pour EDITER
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            const name = btn.dataset.name;
+            const code = btn.dataset.code;
+            const description = btn.dataset.description;
+            const status = btn.dataset.status === "true";
+
+            // Remplir les champs
+            idInput.value = id;
+            nameInput.value = name;
+            codeInput.value = code;
+            descInput.value = description;
+
+            // Sélectionner le bon statut
+            statusInputs.forEach(input => {
+                input.checked = (status && input.value === "active") ||
+                    (!status && input.value === "inactive");
+            });
+
+            // Modifier le texte et action
+            modalTitle.textContent = "Edit Department";
+            submitBtn.textContent = "Update Department";
+            form.action = "/addDepartment"; // servlet update
+
+            modal.classList.remove("hidden");
+        });
+    });
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            if (confirm("Are you sure you want to delete this department?")) {
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/deleteDepartment";
+
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "id";
+                input.value = id;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+
 </script>
+

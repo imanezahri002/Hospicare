@@ -11,6 +11,7 @@ public class DepartementMapper {
         departement.setCode(dto.getCode());
         departement.setNom(dto.getNom());
         departement.setDescription(dto.getDescription());
+        departement.setActive(dto.getIs_active());
         return departement;
     }
     // 🔹 (Optionnel) Mapper de l'entité vers un DTO si tu veux afficher après ajout
@@ -19,7 +20,8 @@ public class DepartementMapper {
                 entity.getId(),
                 entity.getCode(),
                 entity.getNom(),
-                entity.getDescription()
+                entity.getDescription(),
+                entity.getIsActive()
         );
     }
 }
