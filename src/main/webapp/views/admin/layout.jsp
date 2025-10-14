@@ -111,13 +111,13 @@
 <%--            </div>--%>
 
             <!-- Page Header -->
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+<%--            <div class="flex justify-between items-center mb-6">--%>
+<%--                <h1 class="text-3xl font-bold">Admin Dashboard</h1>--%>
 <%--                <button class="bg-primary text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-green-500 transition-colors duration-300">--%>
 <%--                    <i class="fas fa-plus"></i>--%>
 <%--                    New User--%>
 <%--                </button>--%>
-            </div>
+<%--            </div>--%>
             <main>
                 <jsp:include page="${contentPage}" />
 

@@ -3,6 +3,7 @@ package org.example.demo.entities;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,11 +22,35 @@ public class Departement {
     @Column(name = "description")
     private String description;
 
+    private boolean is_active=true;
+
+    public boolean getIsActive() {
+        return is_active;
+    }
+
+    public void setActive(boolean is_active) {
+        this.is_active = is_active;
+    }
+
+
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    // Gestion automatique des timestamps
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     public Departement() {}
 
