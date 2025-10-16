@@ -57,6 +57,9 @@ public class DepartementServiceImpl implements DepartementService {
         departmentRepository.findById(dtoRequest.getId());
         return DepartementMapper.toDto(departement);
     }
+    public Departement findDepartement(UUID id){
+        return departmentRepository.findById(id);
+    }
     @Override
     public void delete(UUID id) {
         EntityManager em = PersistenceManager.getEntityManager();

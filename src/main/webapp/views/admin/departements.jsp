@@ -7,7 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@include file="layouts/header.jsp"%>
+<%@include file="layouts/sidebar.jsp"%>
+<%@include file="layouts/mainHeader.jsp"%>
 
+<!-- Dashboard Cards -->
+<main>
 <!-- Page Header -->
 <div class="flex justify-between items-center mb-6">
     <div>

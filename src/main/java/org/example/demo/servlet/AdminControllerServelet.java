@@ -6,32 +6,45 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.demo.dto.departement.DepartementDtoResponse;
+import org.example.demo.entities.Speciality;
 import org.example.demo.service.impl.DepartementServiceImpl;
+import org.example.demo.service.impl.SpecialityServiceImpl;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/controller")
+@WebServlet("/admin/*")
 public class AdminControllerServelet extends HttpServlet {
+    private final SpecialityServiceImpl specialityService = new SpecialityServiceImpl();
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String page = request.getParameter("page");
-        String contentPage = "dashboard.jsp"; // défaut
+        String path = request.getPathInfo(); // ✅ changement ici
 
-        if ("users".equals(page)) {
-            contentPage = "users.jsp";
-        } else if ("departements".equals(page)) {
+        if ("/users".equals(path)) {
+            request.getRequestDispatcher("/views/admin/users.jsp").forward(request, response);
+            return;
+
+        } else if ("/departements".equals(path)) {
             List<DepartementDtoResponse> departements = new DepartementServiceImpl().findAllDepartement();
             request.setAttribute("departements", departements);
+            request.getRequestDispatcher("/views/admin/departements.jsp").forward(request, response);
+            return;
 
-            contentPage = "/views/admin/departements.jsp";
-            contentPage = "departements.jsp";
-        }else if("speciality".equals(page)){
-            contentPage="speciality.jsp";
+        } else if ("/speciality".equals(path)) {
+            List<Speciality> specialities = specialityService.getAllSpecialities();
+            List<DepartementDtoResponse> departements = new DepartementServiceImpl().findAllDepartement();
+
+            request.setAttribute("departements", departements);
+            request.setAttribute("specialities", specialities);
+
+            request.getRequestDispatcher("/views/admin/speciality.jsp").forward(request, response);
+            return;
         }
 
-        request.setAttribute("contentPage", contentPage);
-        request.getRequestDispatcher("views/admin/layout.jsp").forward(request, response);
+        // ✅ si aucun path ne correspond → tableau de bord
+        request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
     }
 }

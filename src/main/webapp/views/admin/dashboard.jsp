@@ -6,12 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@include file="layouts/header.jsp"%>
+<%@include file="layouts/sidebar.jsp"%>
+<%@include file="layouts/mainHeader.jsp"%>
+
 <!-- Dashboard Cards -->
+<main>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Total Appointments Card -->
     <div class="bg-white rounded-xl shadow-card p-6 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
@@ -97,6 +97,5 @@
         <canvas id="departmentsChart" height="250"></canvas>
     </div>
 </div>
-
-</body>
-</html>
+    </main>
+<%@include file="layouts/footer.jsp"%>

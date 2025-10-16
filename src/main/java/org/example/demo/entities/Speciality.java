@@ -25,6 +25,16 @@ public class Speciality {
     @Column(name = "description")
     private String description;
 
+    private boolean is_active=true;
+
+    public boolean getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
+    }
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -35,15 +45,35 @@ public class Speciality {
     @JoinColumn(name = "departement_id", nullable = false)
     private Departement departement;
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
 
     // Constructeurs
     public Speciality() {}
 
-    public Speciality(UUID id,String code, String nom, String description) {
+    public Speciality(UUID id,String code, String nom, String description,boolean is_active) {
         this.id=id;
         this.code = code;
         this.nom = nom;
         this.description = description;
+        this.is_active=is_active;
     }
 
     // Getters et Setters

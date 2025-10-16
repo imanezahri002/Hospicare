@@ -31,12 +31,11 @@ public class DepartementAddServelet extends HttpServlet {
         if(request.getParameter("id") == null || request.getParameter("id").isEmpty()) {
             departementService.addDepartement(departementDto);
         }else{
-
             departementDto.setId(UUID.fromString(request.getParameter("id")));
             departementService.updateDepartement(departementDto);
         }
 
-        response.sendRedirect(request.getContextPath() + "/controller?page=departements");
+        response.sendRedirect(request.getContextPath() + "/admin/departements");
 
 
     }

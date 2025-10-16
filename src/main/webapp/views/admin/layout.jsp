@@ -52,7 +52,7 @@
         <nav class="py-4">
             <ul>
                 <li class="mb-1">
-                    <a href="${pageContext.request.contextPath}/controller?page=dashboard" class="flex items-center px-6 py-3 text-white/80 hover:text-white hover:bg-white/10 border-l-4 border-primary bg-white/10 text-white transition-all duration-300">
+                    <a href="controller?page=dashboard" class="flex items-center px-6 py-3 text-white/80 hover:text-white hover:bg-white/10 border-l-4 border-primary bg-white/10 text-white transition-all duration-300">
                         <i class="fas fa-tachometer-alt w-5 text-center mr-3"></i>
                         <span>Dashboard</span>
                     </a>

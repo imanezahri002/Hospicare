@@ -22,7 +22,7 @@ public class DepartementDeleteServelet extends HttpServlet {
             UUID id = UUID.fromString(idStr); // conversion string -> UUID
             departementService.delete(id);
         }
-        response.sendRedirect(request.getContextPath() + "/controller?page=departements");
+        response.sendRedirect(request.getContextPath() + "/admin/departements");
 
     }
 }

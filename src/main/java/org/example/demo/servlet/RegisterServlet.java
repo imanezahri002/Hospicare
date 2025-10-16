@@ -1,16 +1,13 @@
 package org.example.demo.servlet;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.demo.dto.Patient.PatientDtoRequest;
-import org.example.demo.dto.speciality.SpecialityDtoResponse;
 import org.example.demo.entities.Patient;
 import org.example.demo.entities.Speciality;
-import org.example.demo.mapper.SpecialityMapper;
 import org.example.demo.repository.Implement.PatientRepoImpl;
 import org.example.demo.repository.Implement.SpecialityRepoImpl;
 import org.example.demo.repository.Interfaces.IPatientRepo;
@@ -31,17 +28,6 @@ public class RegisterServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest request,HttpServletResponse response)
             throws ServletException, IOException {
-        // 📦 Récupérer toutes les spécialités depuis la DB
-        List<Speciality> specialities = specialityRepo.findAll();
-
-        // 🎯 Mapper en ResponseDTO (pour afficher dans JSP)
-        List<SpecialityDtoResponse> specialityDTOs = specialities.stream()
-                .map(SpecialityMapper::toResponseDTO)
-                .collect(Collectors.toList());
-
-        // 🔗 Envoyer à la vue
-        request.setAttribute("specialities", specialityDTOs);
-        request.getRequestDispatcher("/views/register.jsp").forward(request, response);
 
 
             }

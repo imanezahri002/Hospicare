@@ -6,11 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@include file="layouts/header.jsp"%>
+<%@include file="layouts/sidebar.jsp"%>
+<%@include file="layouts/mainHeader.jsp"%>
 
-</body>
-</html>
+<!-- Dashboard Cards -->
+<main>
+
+</main>
+<%@include file="layouts/footer.jsp"%>
