@@ -1,4 +1,3 @@
-<%@ page import="org.example.demo.dto.SpecialityDtoResponse" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Youcode

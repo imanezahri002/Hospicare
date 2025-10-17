@@ -21,10 +21,10 @@ public class AdminControllerServelet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String path = request.getPathInfo(); // ✅ changement ici
+        String path = request.getPathInfo();
 
-        if ("/users".equals(path)) {
-            request.getRequestDispatcher("/views/admin/users.jsp").forward(request, response);
+        if ("/patients".equals(path)) {
+            request.getRequestDispatcher("/views/admin/patients.jsp").forward(request, response);
             return;
 
         } else if ("/departements".equals(path)) {
@@ -41,6 +41,15 @@ public class AdminControllerServelet extends HttpServlet {
             request.setAttribute("specialities", specialities);
 
             request.getRequestDispatcher("/views/admin/speciality.jsp").forward(request, response);
+            return;
+        }else if ("/doctors".equals(path)){
+            List<Speciality> specialities = specialityService.getAllSpecialities();
+            List<DepartementDtoResponse> departements = new DepartementServiceImpl().findAllDepartement();
+
+            request.setAttribute("departements", departements);
+            request.setAttribute("specialities", specialities);
+
+            request.getRequestDispatcher("/views/admin/doctors.jsp").forward(request, response);
             return;
         }
 

@@ -7,6 +7,8 @@ import org.example.demo.config.PersistenceManager;
 import org.example.demo.entities.User;
 import org.example.demo.repository.Interfaces.IUserRepo;
 
+import java.util.List;
+
 public class UserRepoImpl implements IUserRepo {
 
     @Override
@@ -26,4 +28,21 @@ public class UserRepoImpl implements IUserRepo {
             em.close(); // très important !
         }
     }
+    @Override
+    public List<User> findAll() {
+        EntityManager em = PersistenceManager.getEntityManager();
+        List<User> users = null;
+
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+            users = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        return users;
+    }
+
 }

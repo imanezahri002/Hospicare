@@ -52,10 +52,10 @@ public class Patient extends User{
     public Patient() {}
 
     // Constructeur qui appelle super()
-    public Patient(String email, String password, String fullName, Role role,
+    public Patient(UUID id ,String email, String password, String fullName, Role role,
                    String cin, LocalDate bithdate, Sexe sexe,
                    String adresse, String telephone, GroupSanguin sang) {
-        super(email,password,fullName,role);
+        super(id,email,password,fullName,role);
         this.cin = cin;
         this.bithdate = bithdate;
         this.sexe = sexe;

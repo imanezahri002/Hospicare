@@ -15,32 +15,33 @@ public class User {
     @GeneratedValue
     @UuidGenerator
     @Column(columnDefinition = "UUID")
-    private UUID id;
+    protected UUID id;
 
     @Column(nullable = false, unique = true)
-    private String email;
+    protected String email;
 
     @Column(nullable = false)
-    private String password;
+    protected String password;
 
     @Column(name = "full_name", nullable = false)
-    private String fullName;
+    protected String fullName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    protected Role role;
 
     // timestamps
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
+    protected Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    protected Instant updatedAt;
 
     // == Constructeurs ==
     public User() {}
 
-    public User(String email, String password, String fullName, Role role) {
+    public User(UUID id,String email, String password, String fullName, Role role) {
+        this.id=id;
         this.email = email;
         this.password = password;
         this.fullName = fullName;

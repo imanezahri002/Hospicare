@@ -1,5 +1,6 @@
 package org.example.demo.servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import org.example.demo.repository.Implement.SpecialityRepoImpl;
 import org.example.demo.repository.Interfaces.IPatientRepo;
 import org.example.demo.repository.Interfaces.ISpecialityRepo;
 import org.example.demo.mapper.PatientMapper;
+import org.example.demo.service.impl.PatientServiceImpl;
+import org.example.demo.service.interfaces.PatientService;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet(name="register",value = "/register")
+
 public class RegisterServlet extends HttpServlet{
 
     private final IPatientRepo patientRepository = new PatientRepoImpl();
@@ -29,6 +33,8 @@ public class RegisterServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request,HttpServletResponse response)
             throws ServletException, IOException {
 
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/register.jsp");
+        dispatcher.forward(request, response);
 
             }
 

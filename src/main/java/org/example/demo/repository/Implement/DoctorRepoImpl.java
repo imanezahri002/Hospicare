@@ -4,75 +4,22 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import org.example.demo.config.PersistenceManager;
-import org.example.demo.entities.Patient;
-import org.example.demo.repository.Interfaces.IPatientRepo;
+import org.example.demo.entities.Doctor;
+import org.example.demo.repository.Interfaces.IDoctorRepo;
 
 import java.util.List;
 import java.util.UUID;
 
-public class PatientRepoImpl implements IPatientRepo {
+public class DoctorRepoImpl implements IDoctorRepo {
 
+    public void save(Doctor doctor) {
 
-    @Override
-    public void save(Patient patient) {
-        EntityManager em = PersistenceManager.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-
-        try {
-            transaction.begin();       // Démarrer la transaction
-            em.persist(patient);       // Persiste le patient (et user lié automatiquement)
-            transaction.commit();      // Valider la transaction
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback(); // Annuler en cas d'erreur
-            }
-            e.printStackTrace();
-        } finally {
-            em.close();                 // Toujours fermer l'EntityManager
-        }
-    }
-
-    @Override
-    public Patient findById(UUID id) {
-        EntityManager em = PersistenceManager.getEntityManager();
-        Patient patient = null;
-
-        try {
-            patient = em.find(Patient.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-        return patient;
-    }
-
-    // 📋 Récupérer tous les patients
-    @Override
-    public List<Patient> findAll() {
-        EntityManager em = PersistenceManager.getEntityManager();
-        List<Patient> patients = null;
-
-        try {
-            TypedQuery<Patient> query = em.createQuery("SELECT p FROM Patient p", Patient.class);
-            patients = query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-        return patients;
-    }
-
-    // ✏️ Mettre à jour un patient existant
-    @Override
-    public void update(Patient patient) {
         EntityManager em = PersistenceManager.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
         try {
             transaction.begin();
-            em.merge(patient);  // merge remplace persist pour mettre à jour
+            em.persist(doctor);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) transaction.rollback();
@@ -82,17 +29,62 @@ public class PatientRepoImpl implements IPatientRepo {
         }
     }
 
-    // 🗑️ Supprimer un patient
-    @Override
+    public Doctor findById(UUID id) {
+        EntityManager em = PersistenceManager.getEntityManager();
+        Doctor doctor = null;
+
+        try {
+            doctor = em.find(Doctor.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        return doctor;
+    }
+
+    public List<Doctor> findAll() {
+        EntityManager em = PersistenceManager.getEntityManager();
+        List<Doctor> doctors = null;
+
+        try {
+            TypedQuery<Doctor> query = em.createQuery("SELECT d FROM Doctor d", Doctor.class);
+            doctors = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return doctors;
+    }
+
+    public void update(Doctor doctor) {
+        EntityManager em = PersistenceManager.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            em.merge(doctor);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+
     public void delete(UUID id) {
         EntityManager em = PersistenceManager.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
         try {
             transaction.begin();
-            Patient patient = em.find(Patient.class, id);
-            if (patient != null) {
-                em.remove(patient);
+            Doctor doctor = em.find(Doctor.class, id);
+            if (doctor != null) {
+                em.remove(doctor);
             }
             transaction.commit();
         } catch (Exception e) {
@@ -102,5 +94,4 @@ public class PatientRepoImpl implements IPatientRepo {
             em.close();
         }
     }
-
 }

@@ -89,7 +89,7 @@ public class SpecialityServelet extends HttpServlet {
     private void updateSpeciality(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        System.out.println("hello");
+
         UUID id = UUID.fromString(req.getParameter("id"));
         String name = req.getParameter("name");
         String code = req.getParameter("code");
@@ -97,15 +97,16 @@ public class SpecialityServelet extends HttpServlet {
         String departmentId = req.getParameter("departmentId");
         boolean active = "active".equals(req.getParameter("status"));
         UUID idDepartement=UUID.fromString(req.getParameter("departmentId"));
+
         Departement departement=departementService.findDepartement(idDepartement);
 
         Speciality speciality = specialityService.getSpecialityById(id);
+
         speciality.setNom(name);
         speciality.setCode(code);
         speciality.setDescription(description);
         speciality.setDepartement(departement);
         speciality.setIs_active(active);
-
         specialityService.updateSpeciality(speciality);
         resp.sendRedirect(req.getContextPath() + "/admin/speciality?action=list");
     }
@@ -116,5 +117,6 @@ public class SpecialityServelet extends HttpServlet {
         UUID id = UUID.fromString(req.getParameter("id"));
         specialityService.deleteSpeciality(id);
         resp.sendRedirect(req.getContextPath() + "/admin/speciality?action=list");
+
     }
 }

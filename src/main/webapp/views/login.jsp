@@ -114,7 +114,7 @@
             </div>
 
             <div class="mt-4">
-                <a href="/register" class="w-full flex justify-center py-3 px-4 border border-medical-300 rounded-lg shadow-sm text-sm font-medium text-medical-600 bg-medical-50 hover:bg-medical-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-medical-300 transition">
+                <a href="${pageContext.request.contextPath}/register" class="w-full flex justify-center py-3 px-4 border border-medical-300 rounded-lg shadow-sm text-sm font-medium text-medical-600 bg-medical-50 hover:bg-medical-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-medical-300 transition">
                     <i class="fas fa-user-plus mr-2"></i>
                     Créer un compte
                 </a>
