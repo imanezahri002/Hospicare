@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
             // Redirection selon le rôle
             switch (user.getRole()) {
                 case ADMIN -> response.sendRedirect(request.getContextPath() + "views/admin/dashboard.jsp");
-                case DOCTOR -> response.sendRedirect(request.getContextPath() + "views/doctor/layout.jsp");
+                case DOCTOR -> response.sendRedirect(request.getContextPath() + "views/doctor/dashboard.jsp");
                 case PATIENT -> response.sendRedirect(request.getContextPath() + "views/patient/layout.jsp");
                 case STAFF -> response.sendRedirect(request.getContextPath()+"views/staf/layout.jsp");
                 default -> response.sendRedirect(request.getContextPath() + "/login.jsp");

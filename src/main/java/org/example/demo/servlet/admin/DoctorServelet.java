@@ -125,17 +125,14 @@ public class DoctorServelet extends HttpServlet {
         doctor.setRole(Role.DOCTOR);
         doctor.setTitre(titre);
         doctor.setMatricule(matricule);
-
         doctorService.updateDoctor(doctor);
         resp.sendRedirect(req.getContextPath() + "/admin/doctors?action=list");
     }
-
     private void deleteDoctor(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         UUID id = UUID.fromString(req.getParameter("id"));
         doctorService.deleteDoctor(id);
         resp.sendRedirect(req.getContextPath() + "/admin/doctors?action=list");
-
     }
 
 
