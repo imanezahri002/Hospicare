@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.demo.dto.auth.LoginDtoRequest;
 
 import org.example.demo.dto.auth.LoginDtoResponse;
@@ -40,26 +41,34 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1️⃣ Récupérer les données du formulaire
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         try {
             LoginDtoRequest dto = new LoginDtoRequest(email, password);
-            LoginDtoResponse user = authService.login(dto);
+            User user = authService.login(dto);
 
-            request.setAttribute("user", user);
-            request.getSession().setAttribute("loggedUser", user);
-            // Redirection selon le rôle
-            switch (user.getRole()) {
-                case ADMIN -> response.sendRedirect(request.getContextPath() + "views/admin/dashboard.jsp");
-                case DOCTOR -> response.sendRedirect(request.getContextPath() + "views/doctor/dashboard.jsp");
-                case PATIENT -> response.sendRedirect(request.getContextPath() + "views/patient/layout.jsp");
-                case STAFF -> response.sendRedirect(request.getContextPath()+"views/staf/layout.jsp");
-                default -> response.sendRedirect(request.getContextPath() + "/login.jsp");
+            if (user == null) {
+                request.setAttribute("error", "Email ou mot de passe incorrect !");
+                request.getRequestDispatcher("views/login.jsp").forward(request, response);
+                return;
             }
+
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedUser", user);
+
+            // ✅ 4. Rediriger selon le rôle
+            switch (user.getRole()) {
+                case ADMIN -> response.sendRedirect(request.getContextPath() + "/views/admin/dashboard.jsp");
+                case DOCTOR -> response.sendRedirect(request.getContextPath() + "/views/doctor/dashboard.jsp");
+                case PATIENT -> response.sendRedirect(request.getContextPath() + "/views/patient/layout.jsp");
+                case STAFF -> response.sendRedirect(request.getContextPath() + "/views/staf/layout.jsp");
+                default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+            }
+
         } catch (Exception e) {
-            request.setAttribute("error", e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Erreur interne : " + e.getMessage());
             request.getRequestDispatcher("views/login.jsp").forward(request, response);
         }
     }

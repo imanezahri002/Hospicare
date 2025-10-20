@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @WebServlet(value = "/admin/doctors")
 public class DoctorServelet extends HttpServlet {
+
     private final DoctorServiceImpl doctorService = new DoctorServiceImpl();
     private final SpecialityServiceImpl specialityService = new SpecialityServiceImpl();
     private final UserRepoImpl userRepo=new UserRepoImpl();

@@ -18,7 +18,7 @@ public class AuthServiceImp implements AuthService {
         this.userRepository=userRepository;
     }
 
-    public LoginDtoResponse login(LoginDtoRequest request) {
+    public User login(LoginDtoRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
 
@@ -36,7 +36,7 @@ public class AuthServiceImp implements AuthService {
         if (user == null)
             throw new IllegalArgumentException("Email ou mot de passe incorrect !");
 
-        return UserMapper.toDto(user);
+        return user;
 
     }
     private boolean isValidEmail(String email) {

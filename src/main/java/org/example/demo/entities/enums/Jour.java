@@ -5,7 +5,5 @@ public enum Jour {
     MARDI,
     MERCREDI,
     JEUDI,
-    VENDREDI,
-    SAMEDI,
-    DIMANCHE
+    VENDREDI
 }

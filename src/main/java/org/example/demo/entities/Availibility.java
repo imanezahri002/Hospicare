@@ -6,6 +6,7 @@ import org.example.demo.entities.enums.Jour;
 import org.example.demo.entities.enums.StatutAvailibility;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -34,19 +35,53 @@ public class Availibility {
 
     @Column(nullable = false)
     private boolean validite;
-
-    // Relation avec Doctor
+    
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    // Getters et Setters
+    @Column(name = "date_debut", columnDefinition = "date", nullable = true)
+    private LocalDate dateDebut;
+
+    @Column(name = "date_fin", columnDefinition = "date", nullable = true)
+    private LocalDate dateFin;
+
+    public Availibility(){}
+
+    public Availibility(UUID id, Jour jour, LocalTime heureDebut, LocalTime heureFin, StatutAvailibility statut, boolean validite, Doctor doctor, LocalDate dateDebut, LocalDate dateFin) {
+        this.id = id;
+        this.jour = jour;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+        this.statut = statut;
+        this.validite = validite;
+        this.doctor = doctor;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+    }
+
     public UUID getId() {
         return id;
     }
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public LocalDate getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public LocalDate getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
     }
 
     public Jour getJour() {

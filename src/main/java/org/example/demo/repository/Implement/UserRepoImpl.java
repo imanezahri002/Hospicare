@@ -28,6 +28,7 @@ public class UserRepoImpl implements IUserRepo {
             em.close(); // très important !
         }
     }
+
     @Override
     public List<User> findAll() {
         EntityManager em = PersistenceManager.getEntityManager();

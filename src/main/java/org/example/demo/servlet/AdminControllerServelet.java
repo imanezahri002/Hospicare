@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.demo.dto.departement.DepartementDtoResponse;
 import org.example.demo.entities.Speciality;
+import org.example.demo.entities.User;
 import org.example.demo.service.impl.DepartementServiceImpl;
 import org.example.demo.service.impl.SpecialityServiceImpl;
 
@@ -22,6 +23,7 @@ public class AdminControllerServelet extends HttpServlet {
             throws ServletException, IOException {
 
         String path = request.getPathInfo();
+
 
         if ("/patients".equals(path)) {
             request.getRequestDispatcher("/views/admin/patients.jsp").forward(request, response);
