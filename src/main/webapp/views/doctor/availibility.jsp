@@ -129,28 +129,10 @@
                                 </button>
 
                                 <!-- Bouton de changement de statut -->
-                                <c:choose>
-                                    <c:when test="${avail.statut eq 'AVAILABLE'}">
-                                        <button
-                                                type="button"
-                                                class="text-red-600 hover:text-red-800 transition toggle-status-btn"
-                                                data-id="${avail.id}"
-                                                data-status="UNAVAILABLE"
-                                                title="Marquer indisponible">
-                                            <i class="fas fa-times-circle text-lg"></i>
-                                        </button>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button
-                                                type="button"
-                                                class="text-green-600 hover:text-green-800 transition toggle-status-btn"
-                                                data-id="${avail.id}"
-                                                data-status="AVAILABLE"
-                                                title="Marquer disponible">
-                                            <i class="fas fa-check-circle text-lg"></i>
-                                        </button>
-                                    </c:otherwise>
-                                </c:choose>
+                                <a href="/doctor/availibility?action=delete&id=${avail.id}">
+                                    <i class="fas fa-trash-alt text-lg text-red-600 hover:text-red-800 transition"></i>
+                                </a>
+
                             </div>
                         </td>
 
@@ -231,12 +213,11 @@
             </form>
         </div>
     </div>
+</div>
 </main>
 
 <%@include file="layouts/footer.jsp"%>
 <script>
-    const path="${pageContext.request.contextPath}";
-
     const submitBtn = document.getElementById("submit-btn");
     const modal = document.getElementById("availabilityModal");
     const openBtn = document.querySelector("button[onclick='openModal()']");
@@ -306,19 +287,19 @@
         }
     }
     // 🔹 Changement de statut de disponibilité
-    document.querySelectorAll(".toggle-status-btn").forEach(btn => {
-        const contextPath = "${pageContext.request.contextPath}";
+    /* global window, document */
 
+    document.querySelectorAll(".toggle-status-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log("hi");
-            const id = btn.dataset.id;
-            const newStatus = btn.dataset.status;
-            console.log(id);
 
-            // Redirige vers le servlet avec l’action appropriée
-            window.location.href = `${path}?action=toggleStatus&id=${id}&status=${newStatus}`;
+            let idAvail = btn.dataset.id;
+            let newStatus = btn.dataset.status;
+
+            window.location.href = `${window.location.pathname}?action=toggleStatus&id=${idAvail}&status=${newStatus}`;
+
         });
     });
+
 </script>
 

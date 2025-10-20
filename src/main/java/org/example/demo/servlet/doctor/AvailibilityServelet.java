@@ -39,8 +39,8 @@ public class AvailibilityServelet extends HttpServlet {
         if (action == null) action = "list";
 
         switch (action) {
-            case "toggleStatus":
-                changeStatusAvailibility(req, resp);
+            case "delete":
+                deleteAvailibility(req, resp);
                 break;
             default: // "list" par défaut
                 listAvailibilities(req, resp);
@@ -130,35 +130,15 @@ public class AvailibilityServelet extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/doctor/availibility?action=list");
     }
 
-    private void changeStatusAvailibility(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println("hello change");
-        String id = req.getParameter("id");
-        String statut = req.getParameter("status");
-
-        System.out.println("Statut reçu: " + statut);
-        System.out.println("ID reçu: " + id);
 
 
+    private void deleteAvailibility(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
 
-        if(id != null && statut != null) {
-            Availibility availability = availibilityService.findById(UUID.fromString(id));
-            if(availability != null){
-                availability.setStatut(StatutAvailibility.valueOf(statut));
-                availibilityService.update(availability);
-            }
-        }
-
+        UUID id = UUID.fromString(req.getParameter("id"));
+        availibilityService.delete(id);
         resp.sendRedirect(req.getContextPath() + "/doctor/availibility?action=list");
     }
-
-
-//    private void deleteAvailibility(HttpServletRequest req, HttpServletResponse resp)
-//            throws IOException {
-//
-//        UUID id = UUID.fromString(req.getParameter("id"));
-//        availibilityService.delete(id);
-//        resp.sendRedirect(req.getContextPath() + "/admin/availibilities?action=list");
-//    }
 
 
 }
