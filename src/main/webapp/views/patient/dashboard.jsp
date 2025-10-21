@@ -3,56 +3,192 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediSearch - Trouvez votre Docteur</title>
+    <title>HospiCare - Trouvez votre Docteur</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        :root {
-            --primary: #3dd1a8;
-            --primary-dark: #2ba88a;
-            --primary-light: #5fdbba;
-            --bg-light: #f8fafb;
-            --text-dark: #1a202c;
-            --text-gray: #718096;
-            --border-color: #e2e8f0;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
         }
 
-        .btn-primary {
-            @apply bg-[#3dd1a8] hover:bg-[#2ba88a] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg;
+        body {
+            background: #3dd1a8;
+            min-height: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .slot-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .slot-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(61, 209, 168, 0.3);
+        }
+
+        .slot-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(61, 209, 168, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .slot-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .doctor-card {
-            @apply bg-white rounded-xl p-6 shadow-sm border border-[#e2e8f0] hover:shadow-lg transition-all duration-300 hover:border-[#3dd1a8];
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .badge-specialty {
-            @apply inline-block bg-[#e0f7f4] text-[#2ba88a] px-3 py-1 rounded-full text-sm font-medium;
+        .doctor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3dd1a8, #667eea);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
-        .time-slot-btn {
-            @apply bg-white border-2 border-[#e2e8f0] hover:border-[#3dd1a8] hover:bg-[#f0fdf9] text-[#1a202c] px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer text-sm font-semibold text-center w-full;
+        .doctor-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .time-slot-btn.selected {
-            @apply bg-[#3dd1a8] text-white border-[#3dd1a8] transform scale-105 shadow-md;
+        .doctor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(61, 209, 168, 0.2);
+            border-color: #3dd1a8;
         }
 
-        .time-slot-btn:active {
-            @apply transform scale-95;
+        .search-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(61, 209, 168, 0.3);
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        .input-container input,
+        .input-container select {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-container input:focus,
+        .input-container select:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(61, 209, 168, 0.15);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #3dd1a8, #2ba88a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .search-btn:hover::before {
+            left: 100%;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(61, 209, 168, 0.4);
+        }
+
+        .header-gradient {
+            background: #3dd1a8;
+        }
+
+        .doctor-avatar {
+            position: relative;
+            border: 3px solid #3dd1a8;
+            box-shadow: 0 5px 15px rgba(61, 209, 168, 0.3);
+        }
+
+        .doctor-avatar::after {
+            content: '✓';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 24px;
+            height: 24px;
+            background: #3dd1a8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #3dd1a8, #2ba88a);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            animation: fadeIn 0.6s ease;
         }
 
         @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-enter {
+            animation: cardEnter 0.5s ease forwards;
+        }
+
+        @keyframes cardEnter {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -60,582 +196,203 @@
             }
         }
 
-        .input-container {
-            position: relative;
-            margin-bottom: 1.5rem;
+        .pulse-badge {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
-        .input-container label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            transition: all 0.3s ease;
-        }
-
-        .input-container input,
-        .input-container select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: white;
-        }
-
-        .input-container input:focus,
-        .input-container select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(61, 209, 168, 0.2);
-        }
-
-        .search-section {
-            @apply relative bg-gradient-to-br from-white via-[#f0fdf9] to-white rounded-2xl shadow-xl p-8 mb-12 overflow-hidden border border-[#3dd1a8]/20;
-        }
-
-        .floating-action {
-            @apply fixed bottom-8 right-8 w-14 h-14 bg-[#3dd1a8] text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-[#2ba88a] z-50;
-        }
-
-        .calendar-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-gray);
-            pointer-events: none;
-        }
-
-        .select-arrow {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-gray);
-            pointer-events: none;
-        }
-
-        .search-btn {
-            background-color: #3dd1a8;
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            height: 48px;
-        }
-
-        .search-btn:hover {
-            background-color: #2ba88a;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transform: translateY(-2px);
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300;
-        }
-
-        .modal-content {
-            @apply bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300;
-        }
-
-        .modal-header {
-            @apply bg-gradient-to-r from-[#3dd1a8] to-[#2ba88a] text-white p-6 rounded-t-2xl;
-        }
-
-        .modal-body {
-            @apply p-6;
-        }
-
-        .modal-footer {
-            @apply p-6 border-t border-[#e2e8f0] flex gap-3;
-        }
-
-        .duration-badge {
-            @apply inline-flex items-center gap-1 bg-[#e0f7f4] text-[#2ba88a] px-3 py-2 rounded-full text-sm font-medium;
-        }
-
-        .time-slots-grid {
-            @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3;
-        }
-
-        .slot-duration {
-            @apply text-xs text-[#718096] mt-1 font-normal;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
     </style>
 </head>
+<body>
 
-<body class="bg-[#f8fafb]">
-<!-- Header -->
-<header class="bg-gradient-to-r from-[#3dd1a8] to-[#2ba88a] text-white py-6 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                    <span class="text-[#3dd1a8] font-bold text-xl">M</span>
-                </div>
-                <h1 class="text-2xl font-bold">MediSearch</h1>
+<header class="header-gradient text-white py-6 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-3 rounded-xl backdrop-blur">
+                <i class="fas fa-heartbeat text-2xl"></i>
             </div>
-            <div class="flex items-center gap-4">
-                <span class="text-sm opacity-90">Bienvenue, Patient</span>
-                <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
-                </button>
+            <div>
+                <h1 class="text-3xl font-bold">HospiCare</h1>
+                <p class="text-sm text-white/80">Votre santé, notre priorité</p>
             </div>
+        </div>
+        <div class="flex gap-4 items-center">
+            <div class="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-xl backdrop-blur">
+                <i class="fas fa-user-circle text-2xl"></i>
+                <span class="font-medium">Patient</span>
+            </div>
+            <button class="bg-white/20 hover:bg-white/30 px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all hover:scale-105">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="font-medium">Déconnexion</span>
+            </button>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Search Section -->
-    <section class="search-section">
-        <!-- Animated Background Elements -->
-        <div class="absolute top-0 right-0 w-64 h-64 bg-[#3dd1a8]/5 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-[#2ba88a]/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        <div class="relative z-10">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 bg-gradient-to-br from-[#3dd1a8] to-[#2ba88a] rounded-lg flex items-center justify-center shadow-lg">
-                    <span class="text-white text-xl"><i class="fas fa-search"></i></span>
+    <!-- Formulaire de recherche -->
+    <section class="search-section mb-12 p-8 rounded-3xl shadow-2xl">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                <i class="fas fa-search text-[#3dd1a8]"></i>
+                Rechercher un médecin
+            </h2>
+            <p class="text-gray-600 mt-2">Trouvez le spécialiste qu'il vous faut en quelques clics</p>
+        </div>
+
+        <form action="patient" method="post" class="flex flex-col sm:flex-row gap-5 items-end">
+            <div class="input-container flex-1">
+                <label for="specialtySelect" class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <i class="fas fa-stethoscope text-[#3dd1a8]"></i>
+                    Spécialité
+                </label>
+                <select id="specialtySelect" name="specialityId" class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3dd1a8] focus:border-transparent">
+                    <option value="">-- Sélectionnez une spécialité --</option>
+                    <c:forEach var="sp" items="${specialities}">
+                        <option value="${sp.nom}">${sp.nom}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="input-container flex-1">
+                <label for="dateSelect" class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <i class="fas fa-calendar-alt text-[#3dd1a8]"></i>
+                    Date du rendez-vous
+                </label>
+                <input type="date" id="dateSelect" name="dateSelect" value="<%= java.time.LocalDate.now() %>" class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3dd1a8] focus:border-transparent">
+            </div>
+            <button type="submit" class="search-btn text-white font-bold px-8 py-3.5 rounded-xl transition-all flex items-center gap-3 shadow-lg">
+                <i class="fas fa-search"></i>
+                <span>Rechercher</span>
+            </button>
+        </form>
+    </section>
+
+    <!-- Résultats -->
+    <c:choose>
+        <c:when test="${empty availibilityDoctor}">
+            <div class="empty-state text-center py-20">
+                <div class="glass-effect inline-block p-10 rounded-3xl shadow-xl">
+                    <div class="bg-gradient-to-br from-[#3dd1a8] to-[#2ba88a] w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <i class="fas fa-search text-5xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Commencez votre recherche</h3>
+                    <p class="text-gray-600 max-w-md mx-auto">Sélectionnez une spécialité et une date pour découvrir les médecins disponibles près de chez vous.</p>
                 </div>
-                <h2 class="text-2xl font-bold text-[#1a202c]">Rechercher un Docteur</h2>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-white flex items-center gap-3 glass-effect inline-block px-6 py-3 rounded-2xl shadow-lg">
+                    <i class="fas fa-user-md text-[#3dd1a8]"></i>
+                    Médecins disponibles
+                    <span class="badge pulse-badge ml-2">${availibilityDoctor.size()}</span>
+                </h3>
             </div>
 
-            <form action="patient" method="post" class="flex gap-4 items-end">
-                <!-- Spécialité -->
-                <div class="input-container flex-1">
-                    <label for="specialtySelect" class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-[#3dd1a8]/10 rounded-full flex items-center justify-center text-sm">
-                <i class="fas fa-stethoscope"></i>
-            </span>
-                        Spécialité
-                    </label>
-                    <div class="relative">
-                        <select id="specialtySelect" name="specialityId"
-                                class="w-full px-4 py-3 border border-[#e2e8f0] rounded-lg appearance-none cursor-pointer pr-10 focus:outline-none focus:ring-2 focus:ring-[#3dd1a8] focus:border-transparent transition-all">
-                            <option value="">-- Sélectionnez une spécialité --</option>
-                            <c:forEach var="sp" items="${specialities}">
-                                <option value="${sp.nom}">
-                                        ${sp.nom}
-                                </option>
-                            </c:forEach>
-                        </select>
-                        <div class="select-arrow absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <c:forEach var="entry" items="${availibilityDoctor}" varStatus="status">
+                    <c:set var="doctor" value="${entry.key}" />
+                    <c:set var="slots" value="${entry.value}" />
+                    <div class="doctor-card card-enter" style="animation-delay: ${status.index * 0.1}s">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="relative">
+                                <img src="/assets/images/doctor1.png" class="doctor-avatar w-20 h-20 rounded-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-1">${doctor.fullName}</h3>
+                                <p class="text-sm font-medium text-[#3dd1a8] flex items-center gap-2">
+                                    <i class="fas fa-stethoscope"></i>
+                                        ${doctor.speciality.nom}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl mb-4">
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="fas fa-clock text-[#3dd1a8]"></i>
+                                <span class="font-semibold">${slots.size()} créneaux disponibles</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+                                <i class="fas fa-calendar-check text-[#3dd1a8]"></i>
+                                Choisissez votre créneau :
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <c:forEach var="slot" items="${slots}">
+                                    <button type="button"
+                                            class="slot-btn px-4 py-2 text-sm rounded-xl bg-[#3dd1a8]/10 text-[#3dd1a8] font-semibold hover:bg-[#3dd1a8] hover:text-white transition-all cursor-pointer border-2 border-transparent hover:border-[#3dd1a8]"
+                                            data-doctor-name="${doctor.fullName}"
+                                            data-doctor-id="${doctor.id}"
+                                            data-slot="${slot}"
+                                            data-date="${param.dateSelect != null ? param.dateSelect : ''}">
+                                        <i class="fas fa-clock mr-1"></i>${slot}
+                                    </button>
+                                </c:forEach>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Date -->
-                <div class="input-container flex-1">
-                    <label for="dateSelect" class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-[#3dd1a8]/10 rounded-full flex items-center justify-center text-sm">
-                <i class="fas fa-calendar-alt"></i>
-            </span>
-                        Date
-                    </label>
-                    <div class="relative">
-                        <input type="date" id="dateSelect" name="date"
-                               class="w-full px-4 py-3 border border-[#e2e8f0] rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#3dd1a8] focus:border-transparent transition-all">
-
-                    </div>
-                </div>
-
-                <!-- Bouton rechercher -->
-
-                <div class="flex flex-col justify-center h-full mb-[28px]">
-                    <button type="submit" class="px-6 py-3 bg-[#3dd1a8] text-white rounded-lg font-medium hover:bg-[#2bc092] transition-all flex items-center gap-2">
-                        <i class="fas fa-search"></i>
-                        <span>Rechercher</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Results Section -->
-    <section id="resultsSection" class="hidden">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-[#1a202c]">Docteurs Disponibles</h2>
-            <span id="resultCount" class="text-[#718096] font-medium">0 résultats</span>
-        </div>
-
-        <!-- Doctors Grid -->
-        <div id="doctorsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Doctor cards will be inserted here -->
-        </div>
-
-        <!-- No Results Message -->
-        <div id="noResults" class="bg-white rounded-xl p-12 text-center hidden">
-            <div class="text-center">
-                <p class="text-4xl mb-4">😔</p>
-                <p class="text-[#718096] text-lg">Aucun docteur disponible pour ces critères</p>
-                <p class="text-[#a0aec0] text-sm mt-2">Essayez une autre date ou spécialité</p>
+                </c:forEach>
             </div>
-        </div>
-    </section>
+        </c:otherwise>
+    </c:choose>
 
-    <!-- Initial State Message -->
-    <section id="initialState" class="bg-white rounded-xl p-12 text-center">
-        <div class="text-center">
-            <p class="text-4xl mb-4">👨‍⚕️</p>
-            <p class="text-[#718096] text-lg">Effectuez une recherche pour voir les docteurs disponibles</p>
-            <p class="text-[#a0aec0] text-sm mt-2">Sélectionnez une spécialité et une date pour commencer</p>
-        </div>
-    </section>
 </main>
 
-<!-- Confirmation Modal -->
-<div id="confirmationModal" class="modal-overlay hidden">
-    <div class="modal-content">
-        <div class="modal-header">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-calendar-check text-white"></i>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold">Confirmer le rendez-vous</h3>
-                    <p class="text-white text-opacity-90">Veuillez vérifier les détails de votre rendez-vous</p>
-                </div>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="space-y-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-[#3dd1a8] to-[#2ba88a] rounded-lg flex items-center justify-center text-white">
-                        <i class="fas fa-user-md"></i>
-                    </div>
-                    <div>
-                        <h4 id="modalDoctorName" class="font-semibold text-[#1a202c]">Dr. Ahmed Bennani</h4>
-                        <p id="modalDoctorSpecialty" class="text-[#718096] text-sm">Cardiologue</p>
-                    </div>
-                </div>
+<script>
+    document.querySelectorAll('.slot-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const doctorName = button.dataset.doctorName;
+            const doctorId = button.dataset.doctorId;
+            const slot = button.dataset.slot;
+            const date = button.dataset.date;
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-[#718096] text-sm font-medium">Date</p>
-                        <p id="modalDate" class="font-semibold text-[#1a202c]">Lundi 21 Octobre 2025</p>
-                    </div>
-                    <div>
-                        <p class="text-[#718096] text-sm font-medium">Heure</p>
-                        <p id="modalTime" class="font-semibold text-[#1a202c]">10:35</p>
-                    </div>
-                </div>
+            Swal.fire({
+                title: 'Confirmer le rendez-vous',
+                html: `Voulez-vous confirmer un rendez-vous avec <b>${doctorName}</b> pour le créneau <b>${slot}</b> le <b>${date}</b> ?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3dd1a8',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = '/addAppointment';
 
-                <div class="bg-[#f8fafb] rounded-lg p-4">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[#718096] text-sm">Durée du rendez-vous</span>
-                        <span class="duration-badge">
-                                <i class="fas fa-clock"></i>
-                                <span>30 minutes</span>
-                            </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button id="cancelModalBtn" class="flex-1 bg-white border border-[#e2e8f0] text-[#718096] hover:bg-gray-50 font-semibold py-3 px-6 rounded-lg transition-all duration-300">
-                Annuler
-            </button>
-            <button id="confirmAppointmentBtn" class="flex-1 btn-primary">
-                <i class="fas fa-calendar-check mr-2"></i>Confirmer
-            </button>
-        </div>
-    </div>
-</div>
+                    const inputDoctor = document.createElement('input');
+                    inputDoctor.type = 'hidden';
+                    inputDoctor.name = 'doctorId';
+                    inputDoctor.value = doctorId;
 
-<!-- Floating Action Button -->
-<div class="floating-action" id="floatingActionBtn">
-    <i class="fas fa-question"></i>
-</div>
+                    const inputSlot = document.createElement('input');
+                    inputSlot.type = 'hidden';
+                    inputSlot.name = 'slot';
+                    inputSlot.value = slot;
 
-<%--<script>--%>
-<%--    // Mock data for doctors and their availability--%>
-<%--    const doctorsData = [--%>
-<%--        {--%>
-<%--            id: 1,--%>
-<%--            name: "Dr. Ahmed Bennani",--%>
-<%--            specialty: "cardiologue",--%>
-<%--            rating: 4.9,--%>
-<%--            reviews: 128,--%>
-<%--            experience: "15 ans",--%>
-<%--            location: "Casablanca",--%>
-<%--            availability: {--%>
-<%--                "2025-10-21": ["10:35", "14:30", "15:05", "15:40"],--%>
-<%--                "2025-10-22": ["10:00", "11:30", "16:00"],--%>
-<%--                "2025-10-23": ["08:30", "13:00", "15:00"],--%>
-<%--                "2025-10-24": ["09:30", "11:00", "14:30"],--%>
-<%--                "2025-10-25": ["10:00", "12:00", "15:30"]--%>
-<%--            }--%>
-<%--        },--%>
-<%--        {--%>
-<%--            id: 2,--%>
-<%--            name: "Dr. Fatima Alaoui",--%>
-<%--            specialty: "dermatologue",--%>
-<%--            rating: 4.8,--%>
-<%--            reviews: 95,--%>
-<%--            experience: "12 ans",--%>
-<%--            location: "Rabat",--%>
-<%--            availability: {--%>
-<%--                "2025-10-21": ["10:00", "11:30", "16:00"],--%>
-<%--                "2025-10-23": ["09:00", "10:30", "14:00", "15:30"],--%>
-<%--                "2025-10-25": ["08:30", "13:00", "15:00"]--%>
-<%--            }--%>
-<%--        },--%>
-<%--        {--%>
-<%--            id: 3,--%>
-<%--            name: "Dr. Hassan Khoury",--%>
-<%--            specialty: "neurologue",--%>
-<%--            rating: 4.7,--%>
-<%--            reviews: 112,--%>
-<%--            experience: "18 ans",--%>
-<%--            location: "Fès",--%>
-<%--            availability: {--%>
-<%--                "2025-10-22": ["09:00", "10:30", "14:00", "15:30"],--%>
-<%--                "2025-10-24": ["10:00", "11:30", "16:00"],--%>
-<%--                "2025-10-25": ["08:30", "13:00", "15:00"]--%>
-<%--            }--%>
-<%--        },--%>
-<%--        {--%>
-<%--            id: 4,--%>
-<%--            name: "Dr. Leila Mansouri",--%>
-<%--            specialty: "pediatre",--%>
-<%--            rating: 4.9,--%>
-<%--            reviews: 156,--%>
-<%--            experience: "14 ans",--%>
-<%--            location: "Marrakech",--%>
-<%--            availability: {--%>
-<%--                "2025-10-21": ["09:30", "11:00", "14:30"],--%>
-<%--                "2025-10-22": ["10:00", "12:00", "15:30"],--%>
-<%--                "2025-10-24": ["08:00", "10:00", "14:00", "16:00"]--%>
-<%--            }--%>
-<%--        }--%>
-<%--    ];--%>
+                    const inputDate = document.createElement('input');
+                    inputDate.type = 'hidden';
+                    inputDate.name = 'date';
+                    inputDate.value = date;
 
-<%--    // DOM Elements--%>
-<%--    const searchForm = document.getElementById('searchForm');--%>
-<%--    const resultsSection = document.getElementById('resultsSection');--%>
-<%--    const doctorsGrid = document.getElementById('doctorsGrid');--%>
-<%--    const noResults = document.getElementById('noResults');--%>
-<%--    const initialState = document.getElementById('initialState');--%>
-<%--    const resultCount = document.getElementById('resultCount');--%>
-<%--    const floatingActionBtn = document.getElementById('floatingActionBtn');--%>
-<%--    const confirmationModal = document.getElementById('confirmationModal');--%>
-<%--    const cancelModalBtn = document.getElementById('cancelModalBtn');--%>
-<%--    const confirmAppointmentBtn = document.getElementById('confirmAppointmentBtn');--%>
+                    form.appendChild(inputDoctor);
+                    form.appendChild(inputSlot);
+                    form.appendChild(inputDate);
 
-<%--    // Modal elements--%>
-<%--    const modalDoctorName = document.getElementById('modalDoctorName');--%>
-<%--    const modalDoctorSpecialty = document.getElementById('modalDoctorSpecialty');--%>
-<%--    const modalDate = document.getElementById('modalDate');--%>
-<%--    const modalTime = document.getElementById('modalTime');--%>
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 
-<%--    // Current appointment data--%>
-<%--    let currentAppointment = null;--%>
-
-<%--    // Set minimum date to today--%>
-<%--    const today = new Date().toISOString().split('T')[0];--%>
-<%--    document.getElementById('dateSelect').setAttribute('min', today);--%>
-
-<%--    // Initialize date input with today's date--%>
-<%--    document.getElementById('dateSelect').value = today;--%>
-
-<%--    // Add event listeners--%>
-<%--    searchForm.addEventListener('submit', performSearch);--%>
-<%--    floatingActionBtn.addEventListener('click', showHelp);--%>
-<%--    cancelModalBtn.addEventListener('click', closeModal);--%>
-<%--    confirmAppointmentBtn.addEventListener('click', confirmAppointment);--%>
-
-<%--    // Close modal when clicking outside--%>
-<%--    confirmationModal.addEventListener('click', (e) => {--%>
-<%--        if (e.target === confirmationModal) {--%>
-<%--            closeModal();--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    // Perform search--%>
-<%--    function performSearch(e) {--%>
-<%--        e.preventDefault();--%>
-
-<%--        const specialty = document.getElementById('specialtySelect').value;--%>
-<%--        const date = document.getElementById('dateSelect').value;--%>
-
-<%--        if (!specialty || !date) {--%>
-<%--            alert('Veuillez sélectionner une spécialité et une date');--%>
-<%--            return;--%>
-<%--        }--%>
-
-<%--        // Filter doctors based on specialty and date--%>
-<%--        const filteredDoctors = doctorsData.filter(doctor => {--%>
-<%--            return doctor.specialty === specialty && doctor.availability[date];--%>
-<%--        });--%>
-
-<%--        // Display results--%>
-<%--        displayResults(filteredDoctors, date);--%>
-<%--    }--%>
-
-<%--    // Display search results--%>
-<%--    function displayResults(doctors, date) {--%>
-<%--        // Hide initial state--%>
-<%--        initialState.classList.add('hidden');--%>
-
-<%--        // Show results section--%>
-<%--        resultsSection.classList.remove('hidden');--%>
-
-<%--        // Update result count--%>
-<%--        resultCount.textContent = `${doctors.length} résultat${doctors.length !== 1 ? 's' : ''}`;--%>
-
-<%--        if (doctors.length === 0) {--%>
-<%--            doctorsGrid.classList.add('hidden');--%>
-<%--            noResults.classList.remove('hidden');--%>
-<%--            return;--%>
-<%--        }--%>
-
-<%--        noResults.classList.add('hidden');--%>
-<%--        doctorsGrid.classList.remove('hidden');--%>
-<%--        doctorsGrid.innerHTML = '';--%>
-
-<%--        // Format date for display--%>
-<%--        const formattedDate = new Date(date).toLocaleDateString('fr-FR', {--%>
-<%--            weekday: 'long',--%>
-<%--            year: 'numeric',--%>
-<%--            month: 'long',--%>
-<%--            day: 'numeric'--%>
-<%--        });--%>
-
-<%--        // Create doctor cards--%>
-<%--        doctors.forEach((doctor, index) => {--%>
-<%--            const card = createDoctorCard(doctor, date, formattedDate);--%>
-<%--            card.style.animation = `fadeIn 0.5s ease-in ${index * 0.1}s both`;--%>
-<%--            doctorsGrid.appendChild(card);--%>
-<%--        });--%>
-<%--    }--%>
-
-<%--    // Create doctor card--%>
-<%--    function createDoctorCard(doctor, date, formattedDate) {--%>
-<%--        const card = document.createElement('div');--%>
-<%--        card.className = 'doctor-card';--%>
-
-<%--        const availableTimes = doctor.availability[date];--%>
-
-<%--        card.innerHTML = `--%>
-<%--                <div class="flex items-start justify-between mb-4">--%>
-<%--                    <div class="flex items-center gap-4">--%>
-<%--                        <div class="w-16 h-16 bg-gradient-to-br from-[#3dd1a8] to-[#2ba88a] rounded-lg flex items-center justify-center text-2xl text-white">--%>
-<%--                            <i class="fas fa-user-md"></i>--%>
-<%--                        </div>--%>
-<%--                        <div>--%>
-<%--                            <h3 class="text-lg font-bold text-[#1a202c]">${doctor.name}</h3>--%>
-<%--                            <p class="text-[#718096] text-sm">${doctor.location}</p>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                    <div class="text-right">--%>
-<%--                        <div class="flex items-center gap-1 mb-1">--%>
-<%--                            <span class="text-yellow-400"><i class="fas fa-star"></i></span>--%>
-<%--                            <span class="font-bold text-[#1a202c]">${doctor.rating}</span>--%>
-<%--                        </div>--%>
-<%--                        <p class="text-[#718096] text-xs">${doctor.reviews} avis</p>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <div class="mb-4 pb-4 border-b border-[#e2e8f0]">--%>
-<%--                    <span class="badge-specialty">${doctor.specialty}</span>--%>
-<%--                    <span class="text-[#718096] text-sm ml-2">${doctor.experience} d'expérience</span>--%>
-<%--                </div>--%>
-
-<%--                <div class="mb-4">--%>
-<%--                    <p class="text-[#718096] text-xs font-medium mb-3">Créneaux disponibles le ${formattedDate}</p>--%>
-<%--                    <div class="time-slots-grid">--%>
-<%--                        ${availableTimes.map(time => `--%>
-<%--                            <button class="time-slot-btn group" data-time="${time}">--%>
-<%--                                <div class="font-semibold">${time}</div>--%>
-<%--                                <div class="slot-duration">30 min</div>--%>
-<%--                            </button>--%>
-<%--                        `).join('')}--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            `;--%>
-
-<%--        // Add event listeners to time slot buttons--%>
-<%--        const timeSlotBtns = card.querySelectorAll('.time-slot-btn');--%>
-
-<%--        timeSlotBtns.forEach(btn => {--%>
-<%--            btn.addEventListener('click', () => {--%>
-<%--                // Remove selected class from all buttons--%>
-<%--                timeSlotBtns.forEach(b => b.classList.remove('selected'));--%>
-
-<%--                // Add selected class to clicked button--%>
-<%--                btn.classList.add('selected');--%>
-
-<%--                // Store appointment data--%>
-<%--                currentAppointment = {--%>
-<%--                    doctor: doctor,--%>
-<%--                    date: date,--%>
-<%--                    time: btn.dataset.time,--%>
-<%--                    formattedDate: formattedDate--%>
-<%--                };--%>
-
-<%--                // Show confirmation modal after a short delay for visual feedback--%>
-<%--                setTimeout(() => {--%>
-<%--                    showConfirmationModal();--%>
-<%--                }, 300);--%>
-<%--            });--%>
-<%--        });--%>
-
-<%--        return card;--%>
-<%--    }--%>
-
-<%--    // Show confirmation modal--%>
-<%--    function showConfirmationModal() {--%>
-<%--        if (!currentAppointment) return;--%>
-
-<%--        // Update modal content--%>
-<%--        modalDoctorName.textContent = currentAppointment.doctor.name;--%>
-<%--        modalDoctorSpecialty.textContent = currentAppointment.doctor.specialty;--%>
-<%--        modalDate.textContent = currentAppointment.formattedDate;--%>
-<%--        modalTime.textContent = currentAppointment.time;--%>
-
-<%--        // Show modal--%>
-<%--        confirmationModal.classList.remove('hidden');--%>
-<%--        document.body.style.overflow = 'hidden';--%>
-<%--    }--%>
-
-<%--    // Close modal--%>
-<%--    function closeModal() {--%>
-<%--        confirmationModal.classList.add('hidden');--%>
-<%--        document.body.style.overflow = 'auto';--%>
-<%--        currentAppointment = null;--%>
-<%--    }--%>
-
-<%--    // Confirm appointment--%>
-<%--    function confirmAppointment() {--%>
-<%--        if (!currentAppointment) return;--%>
-
-<%--        // In a real application, this would send data to the server--%>
-<%--        alert(`Rendez-vous confirmé avec ${currentAppointment.doctor.name} le ${currentAppointment.formattedDate} à ${currentAppointment.time}`);--%>
-
-<%--        // Close modal--%>
-<%--        closeModal();--%>
-<%--    }--%>
-
-<%--    // Show help--%>
-<%--    function showHelp() {--%>
-<%--        alert("Recherchez des médecins par spécialité et date. Cliquez sur un créneau horaire pour réserver un rendez-vous.");--%>
-<%--    }--%>
-<%--</script>--%>
 </body>
 </html>

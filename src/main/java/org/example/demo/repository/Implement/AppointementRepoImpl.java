@@ -1,5 +1,7 @@
 package org.example.demo.repository.Implement;
 
+import jakarta.persistence.EntityTransaction;
+import org.example.demo.entities.Appointement;
 import org.example.demo.entities.enums.StatutAvailibility;
 import org.example.demo.repository.Interfaces.IAppointementRepo;
 
@@ -87,6 +89,23 @@ public class AppointementRepoImpl implements IAppointementRepo {
         }
 
         return slots;
+    }
+
+    @Override
+    public void save(Appointement appointment) {
+        EntityManager em = PersistenceManager.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+            em.persist(appointment);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            e.printStackTrace();
+         } finally {
+            em.close();
+        }
     }
 
 

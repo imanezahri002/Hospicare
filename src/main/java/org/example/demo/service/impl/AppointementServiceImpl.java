@@ -1,5 +1,6 @@
 package org.example.demo.service.impl;
 
+import org.example.demo.entities.Appointement;
 import org.example.demo.entities.Availibility;
 import org.example.demo.entities.Doctor;
 import org.example.demo.repository.Implement.AppointementRepoImpl;
@@ -19,5 +20,11 @@ public class AppointementServiceImpl implements AppointementService {
     public Map<Doctor, List<LocalTime>>findDoctorAndDispo(String specialityName, LocalDate date){
         return apointementRepo.findDoctorAndDispoBySpecialityDate(specialityName,date);
     }
+
+    @Override
+    public void addAppointment(Appointement appointment) {
+        apointementRepo.save(appointment);
+    }
+
 
 }

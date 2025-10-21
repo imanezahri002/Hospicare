@@ -6,14 +6,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.demo.entities.Speciality;
 import org.example.demo.entities.User;
 import org.example.demo.service.impl.AppointementServiceImpl;
+import org.example.demo.service.impl.SpecialityServiceImpl;
 import org.example.demo.service.interfaces.AppointementService;
 import org.example.demo.service.interfaces.PatientService;
+import org.example.demo.service.interfaces.SpecialityService;
 
 import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @WebServlet("/patient/*")
@@ -27,6 +31,11 @@ public class PatientControllerServelet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException,IOException{
+
+        SpecialityService specialityService = new SpecialityServiceImpl();
+        List<Speciality> specialities = specialityService.getAllSpecialities();
+
+        request.setAttribute("specialities", specialities);
 
         User loggedUser = (User) request.getSession().getAttribute("loggedUser");
 

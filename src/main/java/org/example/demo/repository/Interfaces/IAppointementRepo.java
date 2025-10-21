@@ -1,5 +1,6 @@
 package org.example.demo.repository.Interfaces;
 
+import org.example.demo.entities.Appointement;
 import org.example.demo.entities.Availibility;
 import org.example.demo.entities.Doctor;
 
@@ -11,4 +12,6 @@ import java.util.Map;
 public interface IAppointementRepo {
 
     Map<Doctor, List<LocalTime>> findDoctorAndDispoBySpecialityDate(String specialityName, LocalDate date);
+
+    void save(Appointement appointment);
 }
