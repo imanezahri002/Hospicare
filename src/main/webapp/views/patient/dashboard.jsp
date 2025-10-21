@@ -224,6 +224,11 @@
                 <i class="fas fa-user-circle text-2xl"></i>
                 <span class="font-medium">Patient</span>
             </div>
+
+            <!-- Nouveau lien Rendez-vous -->
+            <a href="rendezVous" class="bg-white/20 hover:bg-white/30 px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all hover:scale-105">
+                <span class="font-medium">Rendez-vous</span>
+            </a>
             <button class="bg-white/20 hover:bg-white/30 px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all hover:scale-105">
                 <i class="fas fa-sign-out-alt"></i>
                 <span class="font-medium">Déconnexion</span>

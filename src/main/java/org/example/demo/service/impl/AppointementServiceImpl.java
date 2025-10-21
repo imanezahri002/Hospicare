@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class AppointementServiceImpl implements AppointementService {
 
@@ -24,6 +25,10 @@ public class AppointementServiceImpl implements AppointementService {
     @Override
     public void addAppointment(Appointement appointment) {
         apointementRepo.save(appointment);
+    }
+    @Override
+    public List<Appointement> findAppointements(UUID idPatient){
+        return apointementRepo.findByPatientId(idPatient);
     }
 
 

@@ -108,6 +108,28 @@ public class AppointementRepoImpl implements IAppointementRepo {
         }
     }
 
+    @Override
+     public List<Appointement> findByPatientId(UUID patientId) {
+            EntityManager em = PersistenceManager.getEntityManager();
+            List<Appointement> appointments = null;
+
+            try {
+                appointments = em.createQuery(
+                                "SELECT a FROM Appointement a WHERE a.patient.id = :pid",
+                                Appointement.class
+                        )
+                        .setParameter("pid", patientId)
+                        .getResultList();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                em.close();
+            }
+
+            return appointments;
+        }
+
 
 
 

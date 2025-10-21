@@ -123,6 +123,21 @@ public class Appointement {
         return doctor;
     }
 
+    @Override
+    public String toString() {
+        return "Appointement{" +
+                "id=" + id +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                ", heureDebut=" + heureDebut +
+                ", heureFin=" + heureFin +
+                ", statut=" + statut +
+                ", type=" + type +
+                ", doctor=" + doctor +
+                ", patient=" + patient +
+                '}';
+    }
+
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }

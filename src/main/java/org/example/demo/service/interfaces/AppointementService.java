@@ -8,9 +8,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface AppointementService {
 
     Map<Doctor,List<LocalTime>> findDoctorAndDispo(String specialityName, LocalDate date);
     void addAppointment(Appointement appointment);
+    List<Appointement> findAppointements(UUID idPatient);
 }

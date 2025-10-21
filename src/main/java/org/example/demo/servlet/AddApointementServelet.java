@@ -20,6 +20,7 @@ import org.example.demo.service.interfaces.PatientService;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -50,7 +51,7 @@ public class AddApointementServelet extends HttpServlet {
             }
 
             UUID doctorId = UUID.fromString(doctorIdParam);
-            
+
             LocalTime heureDebut = LocalTime.parse(slotParam);
             LocalTime heureFin = heureDebut.plusMinutes(30);
             LocalDate date = LocalDate.parse(dateParam);
@@ -66,7 +67,13 @@ public class AddApointementServelet extends HttpServlet {
             appointment.setStatut(StatutAppointement.PENDING); // Enum ou String selon ton modèle
             appointment.setType(TypeAppointement.CONSULTATION);
             appointementService.addAppointment(appointment);
+
             request.getSession().setAttribute("successMsg", "Rendez-vous ajouté avec succès !");
+
+            List<Appointement> appointments = appointementService.findAppointements(patient.getId());
+
+            request.setAttribute("appointments", appointments);
+
             response.sendRedirect("views/patient/dashboard.jsp");
 
         } catch (Exception e) {
