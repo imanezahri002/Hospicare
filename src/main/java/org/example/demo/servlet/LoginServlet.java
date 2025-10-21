@@ -11,14 +11,18 @@ import jakarta.servlet.http.HttpSession;
 import org.example.demo.dto.auth.LoginDtoRequest;
 
 import org.example.demo.dto.auth.LoginDtoResponse;
+import org.example.demo.entities.Speciality;
 import org.example.demo.entities.User;
 import org.example.demo.mapper.UserMapper;
 import org.example.demo.repository.Implement.UserRepoImpl;
 import org.example.demo.repository.Interfaces.IUserRepo;
 import org.example.demo.service.impl.AuthServiceImp;
+import org.example.demo.service.impl.SpecialityServiceImpl;
 import org.example.demo.service.interfaces.AuthService;
+import org.example.demo.service.interfaces.SpecialityService;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name="login",value = "/login")
 public class LoginServlet extends HttpServlet {
@@ -28,6 +32,7 @@ public class LoginServlet extends HttpServlet {
     public void init() {
         IUserRepo userRepository = new UserRepoImpl();
         authService = new AuthServiceImp(userRepository);
+
     }
 
     @Override
@@ -61,7 +66,16 @@ public class LoginServlet extends HttpServlet {
             switch (user.getRole()) {
                 case ADMIN -> response.sendRedirect(request.getContextPath() + "/views/admin/dashboard.jsp");
                 case DOCTOR -> response.sendRedirect(request.getContextPath() + "/views/doctor/dashboard.jsp");
-                case PATIENT -> response.sendRedirect(request.getContextPath() + "/views/patient/layout.jsp");
+                case PATIENT -> {
+                    SpecialityService specialityService = new SpecialityServiceImpl();
+                    List<Speciality> specialities = specialityService.getAllSpecialities();
+
+                    request.setAttribute("specialities", specialities);
+
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("views/patient/dashboard.jsp");
+                    dispatcher.forward(request, response);
+                }
+
                 case STAFF -> response.sendRedirect(request.getContextPath() + "/views/staf/layout.jsp");
                 default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             }

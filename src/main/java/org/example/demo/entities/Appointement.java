@@ -47,8 +47,21 @@ public class Appointement {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @OneToOne(mappedBy = "appointement", cascade = CascadeType.ALL)
-    private MedicalNote medicalNote;
+    public Appointement(UUID id, LocalDate dateDebut, LocalDate dateFin, LocalTime heureDebut, LocalTime heureFin, StatutAppointement statut, TypeAppointement type, Doctor doctor, Patient patient) {
+        this.id = id;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+        this.statut = statut;
+        this.type = type;
+        this.doctor = doctor;
+        this.patient = patient;
+    }
+
+    public Appointement() {
+
+    }
 
     public UUID getId() {
         return id;
@@ -122,11 +135,4 @@ public class Appointement {
         this.patient = patient;
     }
 
-    public MedicalNote getMedicalNote() {
-        return medicalNote;
-    }
-
-    public void setMedicalNote(MedicalNote medicalNote) {
-        this.medicalNote = medicalNote;
-    }
 }

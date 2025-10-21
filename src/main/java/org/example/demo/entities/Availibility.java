@@ -35,7 +35,22 @@ public class Availibility {
 
     @Column(nullable = false)
     private boolean validite;
-    
+
+    @Override
+    public String toString() {
+        return "Availibility{" +
+                "id=" + id +
+                ", jour=" + jour +
+                ", heureDebut=" + heureDebut +
+                ", heureFin=" + heureFin +
+                ", statut=" + statut +
+                ", validite=" + validite +
+                ", doctor=" + doctor +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                '}';
+    }
+
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
