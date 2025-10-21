@@ -267,7 +267,12 @@
                     <i class="fas fa-calendar-alt text-[#3dd1a8]"></i>
                     Date du rendez-vous
                 </label>
-                <input type="date" id="dateSelect" name="dateSelect" value="<%= java.time.LocalDate.now() %>" class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3dd1a8] focus:border-transparent">
+                <input
+                        min="<%= java.time.LocalDate.now() %>"
+                        type="date" id="dateSelect"
+                        name="dateSelect"
+                        value="<%= java.time.LocalDate.now() %>"
+                        class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3dd1a8] focus:border-transparent">
             </div>
             <button type="submit" class="search-btn text-white font-bold px-8 py-3.5 rounded-xl transition-all flex items-center gap-3 shadow-lg">
                 <i class="fas fa-search"></i>

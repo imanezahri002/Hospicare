@@ -193,11 +193,19 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Date Début</label>
-                        <input type="date" id="date_debut" name="dateDebut" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="date"
+                               min="<%= java.time.LocalDate.now() %>"
+                               id="date_debut"
+                               name="dateDebut"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Date Fin</label>
-                        <input type="date" id="date_fin" name="dateFin" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="date"
+                               min="<%= java.time.LocalDate.now() %>"
+                               id="date_fin"
+                               name="dateFin"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
 

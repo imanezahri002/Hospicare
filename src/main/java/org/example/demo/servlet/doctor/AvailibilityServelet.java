@@ -75,15 +75,18 @@ public class AvailibilityServelet extends HttpServlet {
 
     private void createAvailibility(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        System.out.println("hello create");
+
+        LocalDate today = LocalDate.now();
 
         String jour = req.getParameter("jour");
         String heureDebut = req.getParameter("heureDebut");
         String heureFin = req.getParameter("heureFin");
         String dateDebut = req.getParameter("dateDebut");
         String dateFin = req.getParameter("dateFin");
+
+
+
         String statut = req.getParameter("statut");
-        System.out.println(dateDebut);
 
         User loggedUser = (User) req.getSession().getAttribute("loggedUser");
 
@@ -105,7 +108,8 @@ public class AvailibilityServelet extends HttpServlet {
     }
 
     private void updateAvailibility(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+            throws IOException
+    {
         System.out.println("hello update");
 
         String id = req.getParameter("id");
