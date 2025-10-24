@@ -13,6 +13,7 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 
+
 <main class="bg-gray-50">
 <div class="min-h-screen p-8">
     <div class="max-w-6xl mx-auto">
@@ -223,6 +224,21 @@
     </div>
 </div>
 </main>
+<%
+    String alertType = (String) request.getAttribute("alertType");
+    String alertMessage = (String) request.getAttribute("alertMessage");
+
+    if (alertType != null && alertMessage != null) {
+%>
+<script>
+    Swal.fire({
+        icon: '<%= alertType %>', // "success" ou "error"
+        title: '<%= alertMessage %>'
+    });
+</script>
+<%
+    }
+%>
 
 <%@include file="layouts/footer.jsp"%>
 <script>

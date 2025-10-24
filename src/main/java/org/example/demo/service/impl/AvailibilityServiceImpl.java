@@ -17,7 +17,7 @@ public class AvailibilityServiceImpl implements AvailibilityService {
     }
 
     @Override
-    public void save(Availibility availibility) {
+    public boolean save(Availibility availibility) {
         List<Availibility> existingAvailabilities = availibilityRepo.findByDoctorId(availibility.getDoctor().getId());
         boolean conflict = existingAvailabilities.stream().anyMatch(a ->
                 a.getDateDebut().equals(availibility.getDateDebut()) &&
@@ -26,9 +26,11 @@ public class AvailibilityServiceImpl implements AvailibilityService {
         );
 
         if (conflict) {
-            throw new IllegalArgumentException("Cette disponibilité existe déjà pour ce docteur !");
+            return false; // indique qu’il y a conflit
         }
         availibilityRepo.save(availibility);
+        return true;
+
     }
 
     @Override

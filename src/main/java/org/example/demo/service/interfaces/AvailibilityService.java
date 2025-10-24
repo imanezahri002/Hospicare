@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AvailibilityService {
-    void save(Availibility availibility);
+    boolean save(Availibility availibility);
     Availibility findById(UUID id);
     List<Availibility> findAll();
     void update(Availibility availibility);

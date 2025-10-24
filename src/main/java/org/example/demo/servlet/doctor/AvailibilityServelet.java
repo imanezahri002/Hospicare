@@ -101,7 +101,15 @@ public class AvailibilityServelet extends HttpServlet {
         Doctor doctor=doctorService.findById(loggedUser.getId());
 
         availability.setDoctor(doctor);
-        availibilityService.save(availability);
+        boolean success=availibilityService.save(availability);
+
+        if (success) {
+            req.setAttribute("alertType", "success");
+            req.setAttribute("alertMessage", "✅ Disponibilité enregistrée avec succès !");
+        } else {
+            req.setAttribute("alertType", "error");
+            req.setAttribute("alertMessage", "❌ Cette disponibilité existe déjà pour ce docteur !");
+        }
 
         resp.sendRedirect(req.getContextPath() + "/doctor/availibility?action=list");
 

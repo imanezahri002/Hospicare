@@ -133,7 +133,7 @@ public class AppointementRepoImpl implements IAppointementRepo {
             return appointments;
         }
 
-    private List<LocalTime> getReservedTimes(UUID doctorId, LocalDate date) {
+    public List<LocalTime> getReservedTimes(UUID doctorId, LocalDate date) {
         EntityManager em = PersistenceManager.getEntityManager();
         List<LocalTime> reservedTimes = new ArrayList<>();
         try {
