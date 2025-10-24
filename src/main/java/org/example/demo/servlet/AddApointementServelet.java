@@ -74,7 +74,7 @@ public class AddApointementServelet extends HttpServlet {
 
             request.setAttribute("appointments", appointments);
 
-            response.sendRedirect("views/patient/dashboard.jsp");
+            request.getRequestDispatcher("views/patient/appointements.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

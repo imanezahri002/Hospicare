@@ -2,6 +2,7 @@ package org.example.demo.repository.Implement;
 
 import jakarta.persistence.EntityTransaction;
 import org.example.demo.entities.Appointement;
+import org.example.demo.entities.enums.StatutAppointement;
 import org.example.demo.entities.enums.StatutAvailibility;
 import org.example.demo.repository.Interfaces.IAppointementRepo;
 
@@ -18,13 +19,12 @@ import java.util.*;
 
 public class AppointementRepoImpl implements IAppointementRepo {
 
-        @Override
-        public Map<Doctor, List<LocalTime>> findDoctorAndDispoBySpecialityDate(String specialityName, LocalDate date) {
+    @Override
+    public Map<Doctor, List<LocalTime>> findDoctorAndDispoBySpecialityDate(String specialityName, LocalDate date) {
             EntityManager em = PersistenceManager.getEntityManager();
             Map<Doctor, List<LocalTime>> result = new HashMap<>();
-
             try {
-                // 1️⃣ Récupérer les docteurs actifs de cette spécialité
+                  // 1️⃣ Récupérer les docteurs actifs de cette spécialité
                 TypedQuery<Doctor> doctorQuery = em.createQuery(
                         "SELECT d FROM Doctor d WHERE d.speciality.nom = :specialityName AND d.is_active = true",
                         Doctor.class
@@ -33,7 +33,7 @@ public class AppointementRepoImpl implements IAppointementRepo {
                 List<Doctor> doctors = doctorQuery.getResultList();
                 System.out.println(doctors);
 
-                // 2️⃣ Pour chaque docteur, récupérer ses disponibilités valides pour la date donnée
+                 // 2️⃣ Pour chaque docteur, récupérer ses disponibilités valides pour la date donnée
                 for (Doctor doctor : doctors) {
                     TypedQuery<Availibility> availQuery = em.createQuery(
                             "SELECT a FROM Availibility a " +
@@ -43,7 +43,9 @@ public class AppointementRepoImpl implements IAppointementRepo {
                                     "AND a.dateDebut <= :date  "+
                                     "AND a.dateFin >= :date",
                             Availibility.class
+
                     );
+
                     availQuery.setParameter("doctor", doctor.getId());
                     availQuery.setParameter("statut", StatutAvailibility.AVAILABLE);
                     availQuery.setParameter("date", date); // date est un java.time.LocalDate
@@ -54,15 +56,16 @@ public class AppointementRepoImpl implements IAppointementRepo {
                         allSlots.addAll(generateTimeSlots(a.getHeureDebut(), a.getHeureFin()));
                     }
 
+                    List<LocalTime> reservedTimes = getReservedTimes(doctor.getId(), date);
+                    allSlots.removeAll(reservedTimes);
+
                     result.put(doctor, allSlots);
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 em.close();
             }
-
             return result;
         }
 
@@ -109,7 +112,7 @@ public class AppointementRepoImpl implements IAppointementRepo {
     }
 
     @Override
-     public List<Appointement> findByPatientId(UUID patientId) {
+    public List<Appointement> findByPatientId(UUID patientId) {
             EntityManager em = PersistenceManager.getEntityManager();
             List<Appointement> appointments = null;
 
@@ -130,6 +133,30 @@ public class AppointementRepoImpl implements IAppointementRepo {
             return appointments;
         }
 
+    private List<LocalTime> getReservedTimes(UUID doctorId, LocalDate date) {
+        EntityManager em = PersistenceManager.getEntityManager();
+        List<LocalTime> reservedTimes = new ArrayList<>();
+        try {
+            TypedQuery<LocalTime> query = em.createQuery(
+                    "SELECT a.heureDebut FROM Appointement a " +
+                            "WHERE a.doctor.id = :doctorId " +
+                            "AND a.statut = :statut " +
+                            "AND :date BETWEEN a.dateDebut AND a.dateFin",
+                    LocalTime.class
+            );
+            query.setParameter("doctorId", doctorId);
+            query.setParameter("date", date);
+            query.setParameter("statut", StatutAppointement.PENDING);
+
+            reservedTimes = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        return reservedTimes;
+    }
 
 
 

@@ -8,6 +8,7 @@ import org.example.demo.repository.Interfaces.IAppointementRepo;
 import org.example.demo.service.interfaces.AppointementService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +25,23 @@ public class AppointementServiceImpl implements AppointementService {
 
     @Override
     public void addAppointment(Appointement appointment) {
+        // Vérification : 2 heures à l'avance minimum
+        LocalDate date = appointment.getDateDebut();
+        LocalTime heureDebut = appointment.getHeureDebut();
+
+        LocalDateTime appointmentDateTime = LocalDateTime.of(date, heureDebut);
+        LocalDateTime now = LocalDateTime.now();
+
+        if (appointmentDateTime.isBefore(now.plusHours(2))) {
+            throw new IllegalArgumentException("Vous devez réserver au moins 2 heures à l'avance !");
+        }
+
         apointementRepo.save(appointment);
     }
+
     @Override
     public List<Appointement> findAppointements(UUID idPatient){
         return apointementRepo.findByPatientId(idPatient);
     }
-
 
 }

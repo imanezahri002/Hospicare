@@ -11,12 +11,23 @@ import java.util.UUID;
 public class AvailibilityServiceImpl implements AvailibilityService {
     private final IAvailibilityRepo availibilityRepo;
 
+
     public AvailibilityServiceImpl() {
         this.availibilityRepo = new AvailibilityRepoImpl();
     }
 
     @Override
     public void save(Availibility availibility) {
+        List<Availibility> existingAvailabilities = availibilityRepo.findByDoctorId(availibility.getDoctor().getId());
+        boolean conflict = existingAvailabilities.stream().anyMatch(a ->
+                a.getDateDebut().equals(availibility.getDateDebut()) &&
+                        a.getHeureDebut().equals(availibility.getHeureDebut()) &&
+                        a.getHeureFin().equals(availibility.getHeureFin())
+        );
+
+        if (conflict) {
+            throw new IllegalArgumentException("Cette disponibilité existe déjà pour ce docteur !");
+        }
         availibilityRepo.save(availibility);
     }
 
@@ -29,6 +40,7 @@ public class AvailibilityServiceImpl implements AvailibilityService {
     public List<Availibility> findAll() {
         return availibilityRepo.findAll();
     }
+
     @Override
     public List<Availibility> findAvailibilityByDoctor(UUID id){
         return availibilityRepo.findByDoctorId(id);
