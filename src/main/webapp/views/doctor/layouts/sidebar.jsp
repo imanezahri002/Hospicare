@@ -27,7 +27,7 @@
 
 
             <li class="mb-1">
-                <a href="#" class="flex items-center px-6 py-3 text-white/80 hover:text-white hover:bg-white/10 border-l-4 border-transparent transition-all duration-300">
+                <a href="${pageContext.request.contextPath}/logout" class="flex items-center px-6 py-3 text-white/80 hover:text-white hover:bg-white/10 border-l-4 border-transparent transition-all duration-300">
                     <i class="fas fa-cog w-5 text-center mr-3"></i>
                     <span>Deconnecter</span>
                 </a>

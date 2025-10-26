@@ -230,8 +230,11 @@
                 <span class="font-medium">Rendez-vous</span>
             </a>
             <button class="bg-white/20 hover:bg-white/30 px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all hover:scale-105">
+                <a href="${pageContext.request.contextPath}/logout" class="flex items-center px-6 py-3 text-white/80 hover:text-white hover:bg-white/10 border-l-4 border-transparent transition-all duration-300">
+
                 <i class="fas fa-sign-out-alt"></i>
                 <span class="font-medium">Déconnexion</span>
+                </a>
             </button>
         </div>
     </div>
